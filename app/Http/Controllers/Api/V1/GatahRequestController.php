@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GatahRequestResource;
@@ -31,7 +31,7 @@ class GatahRequestController extends Controller
         }
 
         $gatah->update([
-            'is_paid' => $request->is_paid,
+            'is_paid' => 1,
         ]);
 
         GatahRequest::find($gatah->request->id)->update(['status' => 1]);

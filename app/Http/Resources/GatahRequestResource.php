@@ -16,6 +16,7 @@ class GatahRequestResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'gatah_id' => $this->gatah->id,
             'created_at' => $this->created_at,
             'user_name' => $this->user->name,
             'price' => $this->price,

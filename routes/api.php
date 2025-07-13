@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\V1\BalanceController;
 use App\Http\Controllers\Api\V1\BillController;
 use App\Http\Controllers\Api\V1\BillRequestController;
 use App\Http\Controllers\Api\V1\GatahController;
-use App\Http\Controllers\api\v1\GatahRequestController;
+use App\Http\Controllers\Api\V1\GatahRequestController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 

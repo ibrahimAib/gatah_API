@@ -5,15 +5,12 @@ namespace App\Http\Controllers\api\v1;
 use App\Models\Gatah;
 use App\Http\Requests\StoreGatahRequest;
 use App\Http\Requests\UpdateGatahRequest;
-use Illuminate\Database\Eloquent\Casts\Json;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\GatahRequestController;
 use App\Models\Balance;
 use App\Models\GatahRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class GatahController extends Controller
 {
@@ -80,13 +77,8 @@ class GatahController extends Controller
             'is_paid' => 2
         ]);
         $amount = Auth::id() == 3 ? 100 : 150;
-        $pastBalance = Balance::latest()->first()->balance;
-        $currentBalance = $amount + $pastBalance;
-        // Balance::create([
-        //     'balance' => $currentBalance,
-        //     'added' => $amount,
-        //     'discription' => 'قطة'
-        // ]);
+
+
         GatahRequest::create([
             'user_id' => Auth::id(),
             'gatah_id' => $newGatah->id,

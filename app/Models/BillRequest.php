@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BillRequest extends Model
 {
-    protected $fillable = ['bill_id', 'user_id', 'price'];
+    protected $fillable = ['bill_id', 'user_id', 'price', 'status'];
 
     public function user()
     {

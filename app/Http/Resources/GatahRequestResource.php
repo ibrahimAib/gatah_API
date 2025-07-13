@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BillResource extends JsonResource
+class GatahRequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,11 @@ class BillResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'bill_id' => $this->id,
+            'id' => $this->id,
+            'created_at' => $this->created_at,
             'user_name' => $this->user->name,
-            'bill_total' => $this->total,
-            'is_paid' => $this->is_paid == '1' ? 'paid' : 'review',
-            'percheses' => PercheseResource::collection($this->percheses->all())
+            'price' => $this->price,
+            'status' => $this->status == '1' ? 'approved' : 'review',
         ];
     }
 }

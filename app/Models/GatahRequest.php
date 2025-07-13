@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GatahRequest extends Model
 {
-    protected $fillable = ['gatah_id', 'user_id', 'price'];
+    protected $fillable = ['gatah_id', 'user_id', 'price', 'status'];
 
     public function user()
     {

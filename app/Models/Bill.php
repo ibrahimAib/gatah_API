@@ -24,4 +24,8 @@ class Bill extends Model
     {
         return $this->hasMany(Perchese::class);
     }
+    public function request()
+    {
+        return $this->hasOne(BillRequest::class);
+    }
 }

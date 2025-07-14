@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BillRequestResource;
 use App\Models\Balance;
 use App\Models\Bill;
 use App\Models\BillRequest;
@@ -10,6 +11,10 @@ use Illuminate\Http\Request;
 
 class BillRequestController extends Controller
 {
+    public function index()
+    {
+        return BillRequestResource::collection(BillRequest::all());
+    }
     public function bill_paid(Bill $bill, Request $request)
     {
         if ($bill->is_paid == 1) {
@@ -29,7 +34,7 @@ class BillRequestController extends Controller
 
         $pastBalance = Balance::latest()->first()->balance;
         $currentBalance =  $pastBalance - $amount;
-        
+
         Balance::create([
             'balance' => $currentBalance,
             'spent' => $amount,

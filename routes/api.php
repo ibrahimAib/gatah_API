@@ -22,11 +22,12 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
 
 
 Route::group(['prefix' => 'v1/admin', 'middleware' => 'auth:sanctum'], function () {
-    Route::post('/approve-gatah/{gatah}', [GatahRequestController::class, 'approve_gatah']);
     Route::get('/gatah-request', [GatahRequestController::class, 'index']);
-
-
-    Route::post('/bill-paid/{bill}', [BillRequestController::class, 'bill_paid']);
+    Route::post('/approve-gatah/{gatah}', [GatahRequestController::class, 'approve_gatah']);
+    
+    
+    Route::get('/bill-request', [BillRequestController::class, 'index']);
+    Route::post('/pay-bill/{bill}', [BillRequestController::class, 'bill_paid']);
 });
 
 

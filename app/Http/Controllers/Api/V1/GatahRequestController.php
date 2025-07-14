@@ -24,6 +24,7 @@ class GatahRequestController extends Controller
     {
 
         if ($gatah->is_paid == 1) {
+            GatahRequest::find($gatah->request->id)->update(['status' => 1]);
             return response()->json([
                 'message' => 'the gatah already approved!!',
                 'data' =>  GatahRequestResource::collection(GatahRequest::find($gatah->request))

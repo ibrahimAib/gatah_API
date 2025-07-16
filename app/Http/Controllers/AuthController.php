@@ -34,7 +34,7 @@ class AuthController extends Controller
         $user = Auth::user();
         return response()->json([
             'message' => 'Login successful',
-            'token' => $user->createToken('API Token of ' . $user->name, $user->role == 'admin' ? ['role:admin'] : [['role:user']])->plainTextToken,
+            'token' => $user->createToken('API Token of ' . $user->name, $user->role == 'admin' ? ['admin'] : ['user'])->plainTextToken,
             'phone' => $user->phone
         ]);
     }

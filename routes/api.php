@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\V1\GatahRequestController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('/current', [GatahController::class, 'show']);
     Route::get('past', [GatahController::class, 'past']);
     Route::post('/submit-gatah', [GatahController::class, 'store']);
@@ -21,17 +21,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
 });
 
 
-Route::group(['prefix' => 'v1/admin', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'v1/admin', 'middleware' => ['auth:sanctum', 'ability:admin']], function () {
     Route::get('/gatah-request', [GatahRequestController::class, 'index']);
     Route::post('/approve-gatah/{gatah}', [GatahRequestController::class, 'approve_gatah']);
-    
-    
+
+
     Route::get('/bill-request', [BillRequestController::class, 'index']);
     Route::post('/pay-bill/{bill}', [BillRequestController::class, 'bill_paid']);
 });
-
+// 
 
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/auth_test', [AuthController::class, 'auth_test']);
-

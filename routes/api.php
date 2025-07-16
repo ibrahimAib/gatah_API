@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\V1\GatahRequestController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum', 'role:admin']], function () {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/current', [GatahController::class, 'show']);
     Route::get('past', [GatahController::class, 'past']);
     Route::post('/submit-gatah', [GatahController::class, 'store']);

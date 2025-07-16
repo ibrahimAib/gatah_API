@@ -34,3 +34,4 @@ Route::group(['prefix' => 'v1/admin', 'middleware' => 'auth:sanctum'], function 
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/auth_test', [AuthController::class, 'auth_test']);
+

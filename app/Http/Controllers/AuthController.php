@@ -32,10 +32,9 @@ class AuthController extends Controller
 
         // لو نجح تسجيل الدخول، ممكن ترجع التوكن مثلاً
         $user = Auth::user();
-
         return response()->json([
             'message' => 'Login successful',
-            'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken,
+            'token' => $user->createToken('API Token of ' . $user->name, $user->role == 'admin' ? ['role:admin'] : [['role:user']])->plainTextToken,
             'phone' => $user->phone
         ]);
     }

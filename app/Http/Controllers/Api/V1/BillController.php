@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Bill;
 use App\Http\Requests\StoreBillRequest;
-use App\Http\Requests\UpdateBillRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BillResource;
 use App\Models\BillRequest;
 use App\Models\Perchese;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -19,14 +19,6 @@ class BillController extends Controller
     public function index()
     {
         return BillResource::collection(Bill::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -67,5 +59,39 @@ class BillController extends Controller
         return response()->json([
             'message' => 'bill add succssfuly',
         ], 200);
+    }
+
+    public function delete($id)
+    {
+        $bill = Bill::find($id);
+
+        if (!$bill) {
+            return response()->json([
+                'message' => "The bill was deleted or doesn't exist"
+            ], 404);
+        }
+        if ($bill->user->id != Auth::id()) {
+            return response()->json([
+                'message' => 'unAuthorized',
+                'data' => new BillResource($bill)
+            ], 403);
+        }
+
+        if ($bill->is_paid == 1) {
+            return response()->json([
+                'message' => 'the bill is already paid!',
+                'data' => new BillResource($bill)
+            ]);
+        }
+
+        DB::transaction(function () use ($bill) {
+            $bill->request->delete();
+            $bill->delete();
+        });
+
+        return response()->json([
+            'message' => 'bill deleted successfully',
+            'data' => new BillResource($bill)
+        ]);
     }
 }

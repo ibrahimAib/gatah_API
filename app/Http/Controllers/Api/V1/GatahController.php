@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GatahController extends Controller
 {
-    public function index(Request $request)
+    public function past(Request $request)
     {
         $current_month = $request->query('date'); // gets ?date=2025/6
         if (!$current_month) {

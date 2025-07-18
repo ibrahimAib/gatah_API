@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\loginAuthRequest;
-use App\Models\User;
-use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -50,5 +49,19 @@ class AuthController extends Controller
     public function auth_test()
     {
         return response()->json(Auth::user()->phone);
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        $user_data = $request->validated();
+        if (!empty($user_data['password'])) {
+            $user_data['password'] = Hash::make($user_data['password']);
+        }
+        $user = Auth::user();
+        $user->update($user_data);
+        return response()->json([
+            'message' => 'updated successfuly',
+            'updated_user' => $user
+        ], 201);
     }
 }

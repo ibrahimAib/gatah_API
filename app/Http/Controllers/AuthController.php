@@ -35,7 +35,8 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Login successful',
             'token' => $user->createToken('API Token of ' . $user->name, $user->role == 'admin' ? ['admin'] : ['user'])->plainTextToken,
-            'phone' => $user->phone
+            'phone' => $user->phone,
+            'name' => $user->name
         ]);
     }
 

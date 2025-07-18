@@ -18,6 +18,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::post('/delete-bill/{id}', [BillController::class, 'delete']);
     Route::post('/add-bill', [BillController::class, 'store']);
     Route::get('/balance', [BalanceController::class, 'index']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 

@@ -71,30 +71,56 @@ class GatahController extends Controller
 
     public function store(StoreGatahRequest $request)
     {
+        $user_id = Auth::id();
+        $is_paid = 2;
+        $request_status = 2;
+        if ($request->user_id) {
+            if (!Auth::user()->tokenCan('admin')) {
+                return response()->json(['message' => 'Unauthorized.'], 403);
+            }
+
+            $user_id = $request->user_id;
+            $is_paid = 1;
+            $request_status = 1;
+        }
+
+        // 🔍 تحقق من وجود Gatah بنفس التاريخ ونفس اليوزر
+        $exists = Gatah::where('user_id', $user_id)
+            ->where('date', $request->date)
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['message' => 'Already exists for this user and date'], 409);
+        }
+
         $newGatah = Gatah::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user_id,
             'date' => $request->date,
-            'is_paid' => 2
+            'is_paid' => $is_paid
         ]);
+
         $amount = Auth::id() == 3 ? 100 : 150;
 
-
         GatahRequest::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user_id,
             'gatah_id' => $newGatah->id,
             'price' => $amount,
+            'status' => $request_status
         ]);
+
         return response()->json([
-            'message' => 'added sucssecfuly',
+            'message' => 'added successfully',
             'data' => $newGatah
         ], 200);
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Request $request)
     {
+
         $date = $request->query('date'); // gets ?date=2025/6
         if (!$date) {
             return response()->json(['error' => 'No date provided'], 400);

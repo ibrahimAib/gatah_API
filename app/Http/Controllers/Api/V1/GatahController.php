@@ -74,17 +74,19 @@ class GatahController extends Controller
         $user_id = Auth::id();
         $is_paid = 2;
         $request_status = 2;
+        $amount = Auth::id() == 3 ? 100 : 150;
+
         if ($request->user_id) {
             if (!Auth::user()->tokenCan('admin')) {
                 return response()->json(['message' => 'Unauthorized.'], 403);
             }
 
             $user_id = $request->user_id;
+            $amount = $user_id == 3 ? 100 : 150;
             $is_paid = 1;
             $request_status = 1;
         }
 
-        // 🔍 تحقق من وجود Gatah بنفس التاريخ ونفس اليوزر
         $exists = Gatah::where('user_id', $user_id)
             ->where('date', $request->date)
             ->exists();
@@ -99,8 +101,6 @@ class GatahController extends Controller
             'is_paid' => $is_paid
         ]);
 
-        $amount = Auth::id() == 3 ? 100 : 150;
-
         GatahRequest::create([
             'user_id' => $user_id,
             'gatah_id' => $newGatah->id,
@@ -108,11 +108,23 @@ class GatahController extends Controller
             'status' => $request_status
         ]);
 
+        if ($request->user_id && Auth::user()->tokenCan('admin')) {
+            $pastBalance = Balance::latest()->first()?->balance ?? 0;
+            $currentBalance = $amount + $pastBalance;
+
+            Balance::create([
+                'balance' => $currentBalance,
+                'added' => $amount,
+                'discription' => 'قطة'
+            ]);
+        }
+
         return response()->json([
             'message' => 'added successfully',
             'data' => $newGatah
         ], 200);
     }
+
 
 
     /**
